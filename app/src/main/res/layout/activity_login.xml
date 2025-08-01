@@ -59,6 +59,40 @@
                     android:background="@drawable/edittext_background"
                     android:layout_marginBottom="24dp" />
 
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="horizontal"
+                    android:layout_marginTop="16dp"
+                    android:layout_marginBottom="8dp"
+                    android:gravity="center"
+                    android:weightSum="2"
+                    android:paddingHorizontal="8dp">
+
+                    <Button
+                        android:id="@+id/btnForgotPassword"
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="1"
+                        android:text="Quên mật khẩu?"
+                        android:textColor="#FFFFFF"
+                        android:backgroundTint="#4CAF50"
+                        android:textStyle="bold"
+                        android:layout_marginEnd="8dp" />
+
+                    <Button
+                        android:id="@+id/btnCreateAccount"
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="1"
+                        android:text="Tạo tài khoản mới"
+                        android:textColor="#FFFFFF"
+                        android:backgroundTint="#388E3C"
+                        android:textStyle="bold"
+                        android:layout_marginStart="8dp" />
+                </LinearLayout>
+
+
                 <Button
                     android:id="@+id/btnLogin"
                     android:layout_width="match_parent"

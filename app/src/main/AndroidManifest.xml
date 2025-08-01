@@ -8,7 +8,20 @@
         android:supportsRtl="true"
         android:theme="@style/Theme.AppCompat.Light.DarkActionBar">
 
-        <activity android:name=".LoginActivity"
+        <!-- MainActivity -->
+        <activity
+            android:name=".MainActivity"
+            android:exported="false" />
+
+        <!-- RegisterActivity với soft input resize -->
+        <activity
+            android:name=".RegisterActivity"
+            android:exported="false"
+            android:windowSoftInputMode="adjustResize" />
+
+        <!-- LoginActivity là activity khởi động -->
+        <activity
+            android:name=".LoginActivity"
             android:exported="true">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
@@ -19,4 +32,3 @@
     </application>
 
 </manifest>
-
