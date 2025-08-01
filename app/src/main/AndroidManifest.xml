@@ -8,18 +8,10 @@
         android:supportsRtl="true"
         android:theme="@style/Theme.AppCompat.Light.DarkActionBar">
 
-        <!-- MainActivity -->
-        <activity
-            android:name=".MainActivity"
-            android:exported="false" />
+        <activity android:name=".MainActivity" />
+        <activity android:name=".RegisterActivity" />
 
-        <!-- RegisterActivity với soft input resize -->
-        <activity
-            android:name=".RegisterActivity"
-            android:exported="false"
-            android:windowSoftInputMode="adjustResize" />
-
-        <!-- LoginActivity là activity khởi động -->
+        <!-- 👇 Đây là activity chính, cần thêm android:exported -->
         <activity
             android:name=".LoginActivity"
             android:exported="true">
