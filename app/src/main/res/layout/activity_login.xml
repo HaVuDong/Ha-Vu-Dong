@@ -38,11 +38,11 @@
                 android:elevation="6dp">
 
                 <EditText
-                    android:id="@+id/etEmail"
+                    android:id="@+id/etUsername"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:hint="Email"
-                    android:inputType="textEmailAddress"
+                    android:hint="Tên đăng nhập"
+                    android:inputType="textPersonName"
                     android:minHeight="48dp"
                     android:padding="12dp"
                     android:background="@drawable/edittext_background"
