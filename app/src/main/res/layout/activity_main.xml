@@ -1,26 +1,88 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    android:id="@+id/mainLayout"
+<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:padding="24dp"
-    android:orientation="vertical"
-    android:gravity="center"
-    android:background="#ffffff">
+    android:fillViewport="true"
+    android:background="#f2f2f2">
 
-    <TextView
-        android:id="@+id/tvWelcome"
-        android:layout_width="wrap_content"
+    <LinearLayout
+        android:id="@+id/mainLayout"
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:text="Chào mừng bạn"
-        android:textSize="20sp"
-        android:textColor="#000000"
-        android:layout_marginBottom="20dp" />
+        android:padding="24dp"
+        android:orientation="vertical"
+        android:gravity="center_horizontal"
+        android:background="#ffffff">
 
+        <!-- 👤 Text chào mừng (di chuyển lên trên cùng) -->
+        <TextView
+            android:id="@+id/tvWelcome"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Chào mừng bạn đến với Ứng Dụng"
+            android:textSize="20sp"
+            android:textStyle="bold"
+            android:textColor="#333333"
+            android:layout_marginBottom="24dp"
+            android:layout_marginTop="50dp"
+            />
 
-    <Button
-        android:id="@+id/btnBack"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="Đăng xuất" />
-</LinearLayout>
+        <!-- 🔍 Thanh tìm kiếm có logo -->
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            android:layout_marginBottom="12dp"
+            android:gravity="center_vertical">
+
+            <!-- 🖼️ Logo ứng dụng -->
+            <ImageView
+                android:id="@+id/imgLogo"
+                android:layout_width="60dp"
+                android:layout_height="60dp"
+                android:src="@drawable/ic_launcher_foreground"
+                android:contentDescription="Logo"
+                android:layout_marginEnd="12dp" />
+
+            <!-- 🧾 EditText nhập tìm kiếm -->
+            <EditText
+                android:id="@+id/etSearch"
+                android:layout_width="0dp"
+                android:layout_height="48dp"
+                android:layout_weight="1"
+                android:hint="Nhập tên sản phẩm..."
+                android:paddingHorizontal="12dp"
+                android:background="@drawable/bg_edittext"
+                android:inputType="text" />
+        </LinearLayout>
+
+        <!-- 🔘 Nút tìm kiếm -->
+        <Button
+            android:id="@+id/btnSearch"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="Tìm kiếm"
+            android:backgroundTint="#4CAF50"
+            android:textColor="#ffffff"
+            android:layout_marginBottom="24dp" />
+
+        <!-- 📦 Danh sách sản phẩm -->
+        <LinearLayout
+            android:id="@+id/productListLayout"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
+            android:layout_marginBottom="24dp">
+            <!-- Dữ liệu sản phẩm sẽ được thêm động bằng code -->
+        </LinearLayout>
+
+        <!-- 🔙 Nút đăng xuất -->
+        <Button
+            android:id="@+id/btnBack"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="Đăng xuất"
+            android:backgroundTint="#f44336"
+            android:textColor="#ffffff" />
+    </LinearLayout>
+</ScrollView>

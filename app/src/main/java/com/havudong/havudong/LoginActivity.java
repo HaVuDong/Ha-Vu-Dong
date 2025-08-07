@@ -20,7 +20,8 @@ import org.json.JSONObject;
 public class LoginActivity extends AppCompatActivity {
 
     EditText etUsername, etPassword;
-    Button btnLogin, btnCreateAccount;
+    Button btnLogin, btnCreateAccount, btnForgotPassword;
+
     RequestQueue queue;
 
     @Override
@@ -33,6 +34,7 @@ public class LoginActivity extends AppCompatActivity {
         etPassword = findViewById(R.id.etPassword);
         btnLogin = findViewById(R.id.btnLogin);
         btnCreateAccount = findViewById(R.id.btnCreateAccount);
+        btnForgotPassword = findViewById(R.id.btnForgotPassword);
 
         btnLogin.setOnClickListener(v -> {
             String username = etUsername.getText().toString().trim();
@@ -44,8 +46,14 @@ public class LoginActivity extends AppCompatActivity {
             loginUser(username, password);
         });
 
-        btnCreateAccount.setOnClickListener(v ->
-                startActivity(new Intent(LoginActivity.this, RegisterActivity.class)));
+        btnCreateAccount.setOnClickListener(v -> {
+            startActivity(new Intent(LoginActivity.this, RegisterActivity.class));
+        });
+        btnForgotPassword.setOnClickListener(v -> {
+            Intent intent = new Intent(LoginActivity.this, ForgotpassActivity.class);
+            startActivity(intent);
+        });
+
     }
 
     private void loginUser(String username, String password) {
