@@ -1,97 +1,129 @@
 package com.havudong.havudong;
 
+import android.annotation.SuppressLint;
 import android.app.AlertDialog;
+import android.content.DialogInterface;
 import android.os.Bundle;
+import android.text.InputType;
+import android.view.View;
 import android.widget.*;
 import androidx.appcompat.app.AppCompatActivity;
-import org.json.JSONArray;
-import org.json.JSONObject;
-import java.io.InputStream;
+
+import com.havudong.havudong.Api.ApiClient;
+import com.havudong.havudong.Api.ApiService;
+import com.havudong.havudong.Model.User;
+
+import java.util.List;
+
+import retrofit2.Call;
+import retrofit2.Callback;
+import retrofit2.Response;
 
 public class ForgotpassActivity extends AppCompatActivity {
 
-    EditText etUsername, etPhone, etEmail;
-    Button btnVerifyInfo;
+    EditText etUsername, etEmail, etPhone;
+    Button btnVerify;
 
+    ApiService apiService;
+
+    @SuppressLint("MissingInflatedId")
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_forgotpass);
 
         etUsername = findViewById(R.id.etUsername);
-        etPhone = findViewById(R.id.etPhone);
         etEmail = findViewById(R.id.etEmail);
-        btnVerifyInfo = findViewById(R.id.btnVerifyInfo);
+        etPhone = findViewById(R.id.etPhone);
+        btnVerify = findViewById(R.id.btnVerify);
 
-        btnVerifyInfo.setOnClickListener(v -> {
-            String username = etUsername.getText().toString().trim();
-            String phone = etPhone.getText().toString().trim();
-            String email = etEmail.getText().toString().trim();
+        apiService = ApiClient.getClient().create(ApiService.class);
 
-            if (checkUserInfo(username, phone, email)) {
-                showNewPasswordDialog(username);
-            } else {
-                Toast.makeText(this, "Thông tin không đúng", Toast.LENGTH_SHORT).show();
+        btnVerify.setOnClickListener(view -> verifyUser());
+    }
+
+    private void verifyUser() {
+        String username = etUsername.getText().toString().trim();
+        String email = etEmail.getText().toString().trim();
+        String phone = etPhone.getText().toString().trim();
+
+        if (username.isEmpty() || email.isEmpty() || phone.isEmpty()) {
+            Toast.makeText(this, "Vui lòng nhập đầy đủ thông tin!", Toast.LENGTH_SHORT).show();
+            return;
+        }
+
+        apiService.getUsers(username, phone, email).enqueue(new Callback<List<User>>() {
+            @Override
+            public void onResponse(Call<List<User>> call, Response<List<User>> response) {
+                if (response.isSuccessful() && response.body() != null && !response.body().isEmpty()) {
+                    User user = response.body().get(0); // User hợp lệ
+                    showResetPasswordDialog(user);
+                } else {
+                    Toast.makeText(ForgotpassActivity.this, "Thông tin không chính xác!", Toast.LENGTH_SHORT).show();
+                }
+            }
+
+            @Override
+            public void onFailure(Call<List<User>> call, Throwable t) {
+                Toast.makeText(ForgotpassActivity.this, "Lỗi kết nối!", Toast.LENGTH_SHORT).show();
             }
         });
     }
 
-    private boolean checkUserInfo(String username, String phone, String email) {
-        try {
-            InputStream is = getAssets().open("users.json"); // file mô phỏng data
-            int size = is.available();
-            byte[] buffer = new byte[size];
-            is.read(buffer);
-            is.close();
-
-            String json = new String(buffer, "UTF-8");
-            JSONArray users = new JSONArray(json);
-
-            for (int i = 0; i < users.length(); i++) {
-                JSONObject u = users.getJSONObject(i);
-                if (username.equals(u.getString("username")) &&
-                        phone.equals(u.getString("phone")) &&
-                        email.equals(u.getString("email"))) {
-                    return true;
-                }
-            }
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
-        return false;
-    }
-
-    private void showNewPasswordDialog(String username) {
+    private void showResetPasswordDialog(User user) {
         AlertDialog.Builder builder = new AlertDialog.Builder(this);
-        builder.setTitle("Nhập mật khẩu mới");
+        builder.setTitle("Đặt lại mật khẩu");
 
         LinearLayout layout = new LinearLayout(this);
         layout.setOrientation(LinearLayout.VERTICAL);
-        EditText etNewPass = new EditText(this);
-        etNewPass.setHint("Mật khẩu mới");
-        etNewPass.setInputType(0x00000081); // textPassword
-        layout.addView(etNewPass);
+        layout.setPadding(50, 20, 50, 20);
 
-        EditText etConfirmPass = new EditText(this);
-        etConfirmPass.setHint("Xác nhận mật khẩu");
-        etConfirmPass.setInputType(0x00000081); // textPassword
-        layout.addView(etConfirmPass);
+        final EditText newPass = new EditText(this);
+        newPass.setHint("Mật khẩu mới");
+        newPass.setInputType(InputType.TYPE_CLASS_TEXT | InputType.TYPE_TEXT_VARIATION_PASSWORD);
+        layout.addView(newPass);
+
+        final EditText confirmPass = new EditText(this);
+        confirmPass.setHint("Xác nhận mật khẩu");
+        confirmPass.setInputType(InputType.TYPE_CLASS_TEXT | InputType.TYPE_TEXT_VARIATION_PASSWORD);
+        layout.addView(confirmPass);
 
         builder.setView(layout);
 
-        builder.setPositiveButton("Xác nhận", (dialog, which) -> {
-            String newPass = etNewPass.getText().toString();
-            String confirmPass = etConfirmPass.getText().toString();
+        builder.setPositiveButton("Đổi mật khẩu", (dialog, which) -> {
+            String newPassword = newPass.getText().toString().trim();
+            String confirmPassword = confirmPass.getText().toString().trim();
 
-            if (!newPass.isEmpty() && newPass.equals(confirmPass)) {
-                // Thực hiện lưu mật khẩu mới (ví dụ lưu file, gọi API, ...).
-                Toast.makeText(this, "Đặt lại mật khẩu thành công!", Toast.LENGTH_SHORT).show();
-            } else {
-                Toast.makeText(this, "Mật khẩu không khớp!", Toast.LENGTH_SHORT).show();
+            if (newPassword.isEmpty() || confirmPassword.isEmpty()) {
+                Toast.makeText(this, "Không được để trống!", Toast.LENGTH_SHORT).show();
+                return;
             }
+
+            if (!newPassword.equals(confirmPassword)) {
+                Toast.makeText(this, "Mật khẩu không khớp!", Toast.LENGTH_SHORT).show();
+                return;
+            }
+
+            // Cập nhật mật khẩu qua API
+            user.setPassword(newPassword);
+            apiService.updatePassword(String.valueOf(user.getId()), user).enqueue(new Callback<User>() {
+                @Override
+                public void onResponse(Call<User> call, Response<User> response) {
+                    if (response.isSuccessful()) {
+                        Toast.makeText(ForgotpassActivity.this, "Cập nhật mật khẩu thành công!", Toast.LENGTH_SHORT).show();
+                    } else {
+                        Toast.makeText(ForgotpassActivity.this, "Cập nhật thất bại!", Toast.LENGTH_SHORT).show();
+                    }
+                }
+
+                @Override
+                public void onFailure(Call<User> call, Throwable t) {
+                    Toast.makeText(ForgotpassActivity.this, "Lỗi mạng!", Toast.LENGTH_SHORT).show();
+                }
+            });
         });
 
-        builder.setNegativeButton("Hủy", (dialog, which) -> dialog.cancel());
+        builder.setNegativeButton("Hủy", null);
         builder.show();
     }
 }

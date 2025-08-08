@@ -32,4 +32,10 @@ public interface ApiService {
     // Cập nhật user
     @PUT("users/{id}")
     Call<User> updatePassword(@Path("id") String id, @Body User updatedUser);
+    @GET("users")
+    Call<List<User>> getUsers(
+            @Query("username") String username,
+            @Query("phone") String phone,
+            @Query("email") String email
+    );
 }
