@@ -1,98 +1,81 @@
 package com.havudong.havudong;
 
 import android.content.Intent;
-import android.content.SharedPreferences;
 import android.os.Bundle;
-import android.util.Log;
-import android.widget.Button;
-import android.widget.EditText;
-import android.widget.Toast;
+import android.widget.*;
 import androidx.appcompat.app.AppCompatActivity;
+import com.havudong.havudong.Api.ApiClient;
+import com.havudong.havudong.Api.ApiService;
+import com.havudong.havudong.Model.User;
 
-import com.android.volley.Request;
-import com.android.volley.RequestQueue;
-import com.android.volley.toolbox.JsonArrayRequest;
-import com.android.volley.toolbox.Volley;
+import retrofit2.*;
 
-import org.json.JSONArray;
-import org.json.JSONObject;
+import java.util.List;
 
 public class LoginActivity extends AppCompatActivity {
 
     EditText etUsername, etPassword;
-    Button btnLogin, btnCreateAccount, btnForgotPassword;
-
-    RequestQueue queue;
+    Button btnLogin, btnForgot, btnRegister;
+    ApiService apiService;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_login);
 
-        queue = Volley.newRequestQueue(this);
+        apiService = ApiClient.getClient().create(ApiService.class);
+
         etUsername = findViewById(R.id.etUsername);
         etPassword = findViewById(R.id.etPassword);
         btnLogin = findViewById(R.id.btnLogin);
-        btnCreateAccount = findViewById(R.id.btnCreateAccount);
-        btnForgotPassword = findViewById(R.id.btnForgotPassword);
+        btnForgot = findViewById(R.id.btnForgotPassword);
+        btnRegister = findViewById(R.id.btnCreateAccount);
 
         btnLogin.setOnClickListener(v -> {
             String username = etUsername.getText().toString().trim();
             String password = etPassword.getText().toString().trim();
+
             if (username.isEmpty() || password.isEmpty()) {
-                Toast.makeText(this, "Vui lòng nhập đủ thông tin", Toast.LENGTH_SHORT).show();
+                Toast.makeText(this, "Vui lòng nhập đầy đủ tài khoản và mật khẩu", Toast.LENGTH_SHORT).show();
                 return;
             }
-            loginUser(username, password);
+
+            apiService.getUsersByUsernameAndPassword(username, password)
+                    .enqueue(new Callback<List<User>>() {
+                        @Override
+                        public void onResponse(Call<List<User>> call, Response<List<User>> response) {
+                            if (response.isSuccessful() && response.body() != null && !response.body().isEmpty()) {
+                                // Lấy user đầu tiên
+                                User user = response.body().get(0);
+                                // Kiểm tra lại username và password
+                                if (user.getUsername().equals(username) && user.getPassword().equals(password)) {
+                                    Toast.makeText(LoginActivity.this, "Đăng nhập thành công", Toast.LENGTH_SHORT).show();
+
+                                    // Truyền tên user sang MainActivity
+                                    Intent intent = new Intent(LoginActivity.this, MainActivity.class);
+                                    intent.putExtra("username", user.getUsername());
+                                    startActivity(intent);
+                                } else {
+                                    Toast.makeText(LoginActivity.this, "Sai tài khoản hoặc mật khẩu", Toast.LENGTH_SHORT).show();
+                                }
+                            } else {
+                                Toast.makeText(LoginActivity.this, "Sai tài khoản hoặc mật khẩu", Toast.LENGTH_SHORT).show();
+                            }
+                        }
+
+                        @Override
+                        public void onFailure(Call<List<User>> call, Throwable t) {
+                            Toast.makeText(LoginActivity.this, "Lỗi kết nối: " + t.getMessage(), Toast.LENGTH_SHORT).show();
+                        }
+                    });
         });
 
-        btnCreateAccount.setOnClickListener(v -> {
+        btnForgot.setOnClickListener(v -> {
+            startActivity(new Intent(LoginActivity.this, ForgotpassActivity.class));
+        });
+
+        btnRegister.setOnClickListener(v -> {
             startActivity(new Intent(LoginActivity.this, RegisterActivity.class));
         });
-        btnForgotPassword.setOnClickListener(v -> {
-            Intent intent = new Intent(LoginActivity.this, ForgotpassActivity.class);
-            startActivity(intent);
-        });
-
-    }
-
-    private void loginUser(String username, String password) {
-        String url = "https://689310b3c49d24bce8694528.mockapi.io/users?username=" + username;
-
-        JsonArrayRequest request = new JsonArrayRequest(
-                Request.Method.GET,
-                url,
-                null,
-                response -> {
-                    if (response.length() == 0) {
-                        Toast.makeText(this, "Không tìm thấy người dùng", Toast.LENGTH_SHORT).show();
-                        return;
-                    }
-                    try {
-                        JSONObject user = response.getJSONObject(0);
-                        String apiPass = user.getString("password");
-                        if (password.equals(apiPass)) {
-                            // Lưu username và user id nếu cần
-                            SharedPreferences prefs = getSharedPreferences("user_data", MODE_PRIVATE);
-                            prefs.edit().putString("username", username).apply();
-
-                            Toast.makeText(this, "Đăng nhập thành công", Toast.LENGTH_SHORT).show();
-                            Intent intent = new Intent(this, MainActivity.class);
-                            intent.putExtra("username", username);
-                            startActivity(intent);
-                            finish();
-                        } else {
-                            Toast.makeText(this, "Sai mật khẩu", Toast.LENGTH_SHORT).show();
-                        }
-                    } catch (Exception e) {
-                        Toast.makeText(this, "Lỗi xử lý dữ liệu", Toast.LENGTH_SHORT).show();
-                    }
-                },
-                error -> {
-                    Toast.makeText(this, "Lỗi kết nối API", Toast.LENGTH_SHORT).show();
-                    Log.e("LoginError", error.toString());
-                });
-
-        queue.add(request);
     }
 }

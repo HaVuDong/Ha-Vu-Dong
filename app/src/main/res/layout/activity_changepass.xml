@@ -7,8 +7,7 @@
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:orientation="vertical"
-        android:layout_marginTop="50dp">
+        android:orientation="vertical">
 
         <!-- Username -->
         <EditText
@@ -17,34 +16,48 @@
             android:layout_height="wrap_content"
             android:hint="Tên đăng nhập"
             android:inputType="text"
-            android:layout_marginBottom="16dp" />
+            android:padding="12dp"
+            android:layout_marginBottom="16dp"
+            android:layout_marginTop="50dp" />
 
-        <!-- Phone -->
+        <!-- Old Password -->
         <EditText
-            android:id="@+id/etPhone"
+            android:id="@+id/etOldPassword"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:hint="Số điện thoại"
-            android:inputType="phone"
+            android:hint="Mật khẩu cũ"
+            android:inputType="textPassword"
+            android:padding="12dp"
             android:layout_marginBottom="16dp" />
 
-        <!-- Email -->
+        <!-- New Password -->
         <EditText
-            android:id="@+id/etEmail"
+            android:id="@+id/etNewPassword"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:hint="Email"
-            android:inputType="textEmailAddress"
+            android:hint="Mật khẩu mới"
+            android:inputType="textPassword"
+            android:padding="12dp"
+            android:layout_marginBottom="16dp" />
+
+        <!-- Confirm New Password -->
+        <EditText
+            android:id="@+id/etConfirmPassword"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:hint="Xác nhận mật khẩu mới"
+            android:inputType="textPassword"
+            android:padding="12dp"
             android:layout_marginBottom="24dp" />
 
         <!-- Confirm Button -->
         <Button
-            android:id="@+id/btnVerifyInfo"
+            android:id="@+id/btnConfirmChange"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:text="Tạo mật khẩu mới"
+            android:text="Xác nhận"
             android:textStyle="bold"
-            android:backgroundTint="#2196F3"
+            android:backgroundTint="#4CAF50"
             android:textColor="#FFFFFF"
             android:padding="12dp" />
     </LinearLayout>
