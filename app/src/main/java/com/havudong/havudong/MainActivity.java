@@ -18,34 +18,34 @@ public class MainActivity extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_main); // layout XML bạn đã gửi trước
+        setContentView(R.layout.activity_main);
 
-        // Ánh xạ các thành phần từ layout
+        // Ánh xạ view
         tvWelcome = findViewById(R.id.tvWelcome);
         btnBack = findViewById(R.id.btnBack);
-        etSearch = findViewById(R.id.etSearch);
-        btnSearch = findViewById(R.id.btnSearch);
 
-        // Lấy dữ liệu username từ Intent
+
+        // Nhận username từ Intent
         String username = getIntent().getStringExtra("username");
-
-        if (username != null) {
+        if (username != null && !username.isEmpty()) {
             tvWelcome.setText("Chào mừng " + username + " đã đăng nhập");
+        } else {
+            tvWelcome.setText("Chào mừng!");
         }
 
         // Xử lý nút Đăng xuất
         btnBack.setOnClickListener(v -> {
             Intent intent = new Intent(MainActivity.this, LoginActivity.class);
             startActivity(intent);
-            finish();
+            finish(); // kết thúc MainActivity
         });
 
-        // Xử lý nút Tìm kiếm
+        // Xử lý tìm kiếm
         btnSearch.setOnClickListener(v -> {
             String keyword = etSearch.getText().toString().trim();
             if (!keyword.isEmpty()) {
-                // Xử lý tìm kiếm ở đây, ví dụ:
-                Toast.makeText(MainActivity.this, "Tìm sản phẩm: " + keyword, Toast.LENGTH_SHORT).show();
+                // Có thể chuyển sang trang kết quả tìm kiếm, hoặc gọi API
+                Toast.makeText(MainActivity.this, "Tìm kiếm: " + keyword, Toast.LENGTH_SHORT).show();
             } else {
                 Toast.makeText(MainActivity.this, "Vui lòng nhập từ khóa", Toast.LENGTH_SHORT).show();
             }
