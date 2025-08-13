@@ -1,16 +1,20 @@
 package com.havudong.havudong;
 
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.widget.*;
 import androidx.appcompat.app.AppCompatActivity;
+
 import com.havudong.havudong.Api.ApiClient;
 import com.havudong.havudong.Api.ApiService;
 import com.havudong.havudong.Model.User;
 
-import retrofit2.*;
-
 import java.util.List;
+
+import retrofit2.Call;
+import retrofit2.Callback;
+import retrofit2.Response;
 
 public class LoginActivity extends AppCompatActivity {
 
@@ -40,26 +44,25 @@ public class LoginActivity extends AppCompatActivity {
                 return;
             }
 
-            apiService.getUsersByUsernameAndPassword(username, password)
+            // Gọi API tìm user theo username
+            apiService.getUsersByUsernameAndPassword(username,password)
                     .enqueue(new Callback<List<User>>() {
                         @Override
                         public void onResponse(Call<List<User>> call, Response<List<User>> response) {
                             if (response.isSuccessful() && response.body() != null && !response.body().isEmpty()) {
-                                // Lấy user đầu tiên
                                 User user = response.body().get(0);
-                                // Kiểm tra lại username và password
-                                if (user.getUsername().equals(username) && user.getPassword().equals(password)) {
-                                    Toast.makeText(LoginActivity.this, "Đăng nhập thành công", Toast.LENGTH_SHORT).show();
 
-                                    // Truyền tên user sang MainActivity
-                                    Intent intent = new Intent(LoginActivity.this, MainActivity.class);
-                                    intent.putExtra("username", user.getUsername());
-                                    startActivity(intent);
+                                // Kiểm tra mật khẩu
+                                if (user.getPassword().equals(password)) {
+                                    saveUserInfo(user);
+                                    Toast.makeText(LoginActivity.this, "Đăng nhập thành công", Toast.LENGTH_SHORT).show();
+                                    startActivity(new Intent(LoginActivity.this, MainActivity.class));
+                                    finish();
                                 } else {
-                                    Toast.makeText(LoginActivity.this, "Sai tài khoản hoặc mật khẩu", Toast.LENGTH_SHORT).show();
+                                    Toast.makeText(LoginActivity.this, "Sai mật khẩu", Toast.LENGTH_SHORT).show();
                                 }
                             } else {
-                                Toast.makeText(LoginActivity.this, "Sai tài khoản hoặc mật khẩu", Toast.LENGTH_SHORT).show();
+                                Toast.makeText(LoginActivity.this, "Không tìm thấy tài khoản", Toast.LENGTH_SHORT).show();
                             }
                         }
 
@@ -70,12 +73,19 @@ public class LoginActivity extends AppCompatActivity {
                     });
         });
 
-        btnForgot.setOnClickListener(v -> {
-            startActivity(new Intent(LoginActivity.this, ForgotpassActivity.class));
-        });
+        btnForgot.setOnClickListener(v -> startActivity(new Intent(LoginActivity.this, ForgotpassActivity.class)));
+        btnRegister.setOnClickListener(v -> startActivity(new Intent(LoginActivity.this, RegisterActivity.class)));
+    }
 
-        btnRegister.setOnClickListener(v -> {
-            startActivity(new Intent(LoginActivity.this, RegisterActivity.class));
-        });
+    private void saveUserInfo(User user) {
+        SharedPreferences preferences = getSharedPreferences("user_data", MODE_PRIVATE);
+        SharedPreferences.Editor editor = preferences.edit();
+        editor.putString("id", user.getId());
+        editor.putString("username", user.getUsername());
+        editor.putString("email", user.getEmail());
+        editor.putString("phone", user.getPhone());
+        editor.putString("address", user.getAddress());
+        editor.putString("password", user.getPassword());
+        editor.apply();
     }
 }

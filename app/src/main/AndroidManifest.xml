@@ -11,6 +11,8 @@
         <activity android:name=".MainActivity" />
         <activity android:name=".RegisterActivity" />
         <activity android:name=".ForgotpassActivity" />
+        <activity android:name=".User.UserInfoActivity" />
+        <activity android:name=".User.ChangePassActivity" />
         <!-- 👇 Đây là activity chính, cần thêm android:exported -->
         <activity
             android:name=".LoginActivity"
