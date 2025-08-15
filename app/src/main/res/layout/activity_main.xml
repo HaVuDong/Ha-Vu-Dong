@@ -6,14 +6,13 @@
     android:layout_height="match_parent"
     tools:context=".MainActivity">
 
-    <!-- Nội dung chính -->
     <RelativeLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:background="#FFFFFF"
         android:layout_marginTop="50dp">
 
-        <!-- Thanh trên cùng -->
+        <!-- Thanh trên cùng + tìm kiếm -->
         <RelativeLayout
             android:id="@+id/topBar"
             android:layout_width="match_parent"
@@ -21,7 +20,6 @@
             android:background="#2196F3"
             android:paddingHorizontal="8dp">
 
-            <!-- Icon Menu -->
             <ImageButton
                 android:id="@+id/btnMenu"
                 android:layout_width="48dp"
@@ -29,12 +27,21 @@
                 android:layout_centerVertical="true"
                 android:background="?attr/selectableItemBackgroundBorderless"
                 android:src="@android:drawable/ic_menu_sort_by_size"
-                android:scaleType="centerInside"
-                android:contentDescription="Menu"
-                android:tint="#FFFFFF"
-                tools:ignore="UseAppTint" />
+                app:tint="#FFFFFF" />
 
-            <!-- Icon Search -->
+            <EditText
+                android:id="@+id/etSearch"
+                android:layout_width="0dp"
+                android:layout_height="48dp"
+                android:layout_marginStart="8dp"
+                android:layout_marginEnd="8dp"
+                android:layout_toStartOf="@id/btnSearchIcon"
+                android:layout_toEndOf="@id/btnMenu"
+                android:background="@android:drawable/editbox_background"
+                android:hint="Tìm kiếm..."
+                android:inputType="text"
+                android:padding="8dp" />
+
             <ImageButton
                 android:id="@+id/btnSearchIcon"
                 android:layout_width="48dp"
@@ -43,63 +50,88 @@
                 android:layout_centerVertical="true"
                 android:background="?attr/selectableItemBackgroundBorderless"
                 android:src="@android:drawable/ic_menu_search"
-                android:scaleType="centerInside"
-                android:contentDescription="Search"
-                android:tint="#FFFFFF"
-                tools:ignore="UseAppTint" />
+                app:tint="#FFFFFF" />
         </RelativeLayout>
 
-        <!-- Thanh tìm kiếm (ẩn mặc định) -->
-        <LinearLayout
-            android:id="@+id/searchBar"
-            android:layout_width="match_parent"
-            android:layout_height="56dp"
-            android:orientation="horizontal"
-            android:layout_below="@id/topBar"
-            android:paddingHorizontal="8dp"
-            android:gravity="center_vertical"
-            android:background="#EEEEEE"
-            android:visibility="gone">
-
-            <EditText
-                android:id="@+id/etSearch"
-                android:layout_width="0dp"
-                android:layout_height="wrap_content"
-                android:layout_weight="1"
-                android:hint="Tìm kiếm..."
-                android:padding="8dp"
-                android:background="@android:drawable/editbox_background"
-                android:inputType="text" />
-
-            <Button
-                android:id="@+id/btnSearch"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="OK" />
-        </LinearLayout>
-
-        <!-- Banner phía dưới thanh tìm kiếm -->
+        <!-- Banner -->
         <ImageView
             android:id="@+id/banner"
             android:layout_width="match_parent"
             android:layout_height="120dp"
-            android:layout_below="@id/searchBar"
+            android:layout_below="@id/topBar"
             android:layout_marginTop="8dp"
             android:scaleType="fitXY"
-            android:adjustViewBounds="true"
             android:src="@drawable/img" />
 
-        <!-- RecyclerView phía dưới banner -->
-        <androidx.recyclerview.widget.RecyclerView
-            android:id="@+id/recyclerView"
+        <!-- HorizontalScrollView danh mục -->
+        <HorizontalScrollView
+            android:id="@+id/horizontalScrollCategories"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_below="@id/banner"
+            android:padding="8dp"
+            android:scrollbars="none">
+
+            <LinearLayout
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal">
+
+                <Button
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="Gà thịt"
+                    android:textColor="#FFFFFF"
+                    android:background="@drawable/btn_category"
+                    android:paddingHorizontal="16dp"
+                    android:paddingVertical="8dp"
+                    android:textSize="14sp"
+                    android:layout_marginEnd="6dp"
+                    android:layout_marginStart="15dp"/>
+                <Space
+                    android:layout_width="25dp"
+                    android:layout_height="wrap_content" />
+
+                <Button
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="Gà Đông Tảo"
+                    android:textColor="#FFFFFF"
+                    android:background="@drawable/btn_category"
+                    android:paddingHorizontal="16dp"
+                    android:paddingVertical="8dp"
+                    android:textSize="14sp"
+                    android:layout_marginEnd="6dp"/>
+                <Space
+                    android:layout_width="25dp"
+                    android:layout_height="wrap_content" />
+                <Button
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="Gà Tre"
+                    android:textColor="#FFFFFF"
+                    android:background="@drawable/btn_category"
+                    android:paddingHorizontal="16dp"
+                    android:paddingVertical="8dp"
+                    android:textSize="14sp"
+                    android:layout_marginEnd="6dp"/>
+            </LinearLayout>
+        </HorizontalScrollView>
+
+        <!-- GridView hiển thị sản phẩm -->
+        <GridView
+            android:id="@+id/gridView"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            android:layout_below="@id/banner"
-            android:padding="8dp" />
-
+            android:layout_below="@id/horizontalScrollCategories"
+            android:numColumns="2"
+            android:verticalSpacing="8dp"
+            android:horizontalSpacing="8dp"
+            android:stretchMode="columnWidth"
+            android:padding="8dp"/>
     </RelativeLayout>
 
-    <!-- Menu trượt từ bên trái -->
+    <!-- Navigation Drawer -->
     <com.google.android.material.navigation.NavigationView
         android:id="@+id/navigationView"
         android:layout_width="wrap_content"
@@ -109,5 +141,4 @@
         android:background="#FFFFFF"
         app:menu="@menu/menu_user"
         app:headerLayout="@layout/nav_header" />
-
 </androidx.drawerlayout.widget.DrawerLayout>

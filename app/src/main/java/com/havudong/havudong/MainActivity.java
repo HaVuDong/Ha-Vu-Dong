@@ -8,16 +8,17 @@ import android.widget.*;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.view.GravityCompat;
 import androidx.drawerlayout.widget.DrawerLayout;
-import androidx.recyclerview.widget.GridLayoutManager;
-import androidx.recyclerview.widget.RecyclerView;
 
 import com.google.android.material.navigation.NavigationView;
 import com.havudong.havudong.Api.ApiClient;
 import com.havudong.havudong.Api.ApiService;
+import com.havudong.havudong.Model.Product;
 import com.havudong.havudong.Model.User;
 import com.havudong.havudong.User.ChangePassActivity;
 import com.havudong.havudong.User.UserInfoActivity;
+import com.havudong.havudong.Adapter.ProductAdapter;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import retrofit2.Call;
@@ -29,10 +30,9 @@ public class MainActivity extends AppCompatActivity {
     DrawerLayout drawerLayout;
     NavigationView navigationView;
     ImageButton btnMenu, btnSearchIcon;
-    LinearLayout searchBar;
     EditText etSearch;
-    Button btnSearch;
     TextView tvNavUsername;
+    GridView gridView;
 
     ApiService apiService;
     String username;
@@ -47,10 +47,8 @@ public class MainActivity extends AppCompatActivity {
         navigationView = findViewById(R.id.navigationView);
         btnMenu = findViewById(R.id.btnMenu);
         btnSearchIcon = findViewById(R.id.btnSearchIcon);
-        searchBar = findViewById(R.id.searchBar);
         etSearch = findViewById(R.id.etSearch);
-        btnSearch = findViewById(R.id.btnSearch);
-        RecyclerView recyclerView = findViewById(R.id.recyclerView);
+        gridView = findViewById(R.id.gridView);
 
         // Header NavigationView
         View headerView = navigationView.getHeaderView(0);
@@ -85,12 +83,8 @@ public class MainActivity extends AppCompatActivity {
             return true;
         });
 
-        // Hiện/ẩn search bar
-        btnSearchIcon.setOnClickListener(v ->
-                searchBar.setVisibility(searchBar.getVisibility() == View.GONE ? View.VISIBLE : View.GONE)
-        );
-
-        btnSearch.setOnClickListener(v -> {
+        // Sự kiện tìm kiếm (nếu muốn)
+        btnSearchIcon.setOnClickListener(v -> {
             String keyword = etSearch.getText().toString().trim();
             if (!keyword.isEmpty()) {
                 Toast.makeText(MainActivity.this, "Tìm kiếm: " + keyword, Toast.LENGTH_SHORT).show();
@@ -100,17 +94,20 @@ public class MainActivity extends AppCompatActivity {
         });
 
         // Dữ liệu mẫu
-        String[] items = {"Sản phẩm 1", "Sản phẩm 2", "Sản phẩm 3", "Sản phẩm 4"};
-        int[] icons = {R.mipmap.ic_launcher, R.mipmap.ic_launcher, R.mipmap.ic_launcher, R.mipmap.ic_launcher};
+        List<Product> products = new ArrayList<>();
+        products.add(new Product("Gà thịt thả vườn", "250.000 ₫", R.drawable.img_4));
+        products.add(new Product("Gà thịt công nghiệp", "100.000 ₫", R.drawable.img_2));
+        products.add(new Product("Gà tre thái", "400.000 ₫", R.drawable.img_3));
+        products.add(new Product("Đông tảo loại 1", "350.000 ₫", R.drawable.img_1));
 
-        // Adapter RecyclerView
-        ProductAdapter adapter = new ProductAdapter(this, items, icons, position -> {
-            Toast.makeText(MainActivity.this, "Bạn chọn: " + items[position], Toast.LENGTH_SHORT).show();
-        });
+        // Gắn adapter custom
+        ProductAdapter adapter = new ProductAdapter(this, products);
+        gridView.setAdapter(adapter);
 
-        recyclerView.setHasFixedSize(true);
-        recyclerView.setLayoutManager(new GridLayoutManager(this, 2)); // 2 cột
-        recyclerView.setAdapter(adapter);
+        // Click item ListView nếu muốn
+        gridView.setOnItemClickListener((parent, view, position, id) ->
+                Toast.makeText(MainActivity.this, "Bạn chọn: " + products.get(position).getName(), Toast.LENGTH_SHORT).show()
+        );
     }
 
     private void loadUserFromApi(String username) {

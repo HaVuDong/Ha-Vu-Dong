@@ -41,7 +41,7 @@ public class CustomAdapter extends BaseAdapter {
             convertView = LayoutInflater.from(context).inflate(R.layout.list_item_custom, parent, false);
         }
 
-        ImageView icon = convertView.findViewById(R.id.itemIcon);
+        ImageView icon = convertView.findViewById(R.id.itemImg);
         TextView name = convertView.findViewById(R.id.itemName);
 
         icon.setImageResource(icons[position]);

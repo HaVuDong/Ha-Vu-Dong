@@ -1,63 +1,71 @@
-package com.havudong.havudong;
+package com.havudong.havudong.Adapter;
 
 import android.content.Context;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.ImageView;
-import android.widget.TextView;
+import android.widget.*;
+import com.havudong.havudong.R;
+import com.havudong.havudong.Model.Product;
 
-import androidx.annotation.NonNull;
-import androidx.recyclerview.widget.RecyclerView;
+import java.util.List;
 
-public class ProductAdapter extends RecyclerView.Adapter<ProductAdapter.ProductViewHolder> {
+public class ProductAdapter extends BaseAdapter {
 
     private Context context;
-    private String[] items;
-    private int[] icons;
-    private OnItemClickListener listener;
+    private List<Product> productList;
 
-    public interface OnItemClickListener {
-        void onItemClick(int position);
-    }
-
-    public ProductAdapter(Context context, String[] items, int[] icons, OnItemClickListener listener) {
+    public ProductAdapter(Context context, List<Product> productList) {
         this.context = context;
-        this.items = items;
-        this.icons = icons;
-        this.listener = listener;
-    }
-
-    @NonNull
-    @Override
-    public ProductViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
-        View view = LayoutInflater.from(context).inflate(R.layout.list_item_custom, parent, false);
-        return new ProductViewHolder(view);
+        this.productList = productList;
     }
 
     @Override
-    public void onBindViewHolder(@NonNull ProductViewHolder holder, int position) {
-        holder.name.setText(items[position]);
-        holder.icon.setImageResource(icons[position]);
-
-        holder.itemView.setOnClickListener(v -> {
-            if (listener != null) listener.onItemClick(position);
-        });
+    public int getCount() {
+        return productList.size();
     }
 
     @Override
-    public int getItemCount() {
-        return items.length;
+    public Object getItem(int position) {
+        return productList.get(position);
     }
 
-    static class ProductViewHolder extends RecyclerView.ViewHolder {
-        ImageView icon;
-        TextView name;
+    @Override
+    public long getItemId(int position) {
+        return position;
+    }
 
-        public ProductViewHolder(@NonNull View itemView) {
-            super(itemView);
-            icon = itemView.findViewById(R.id.itemIcon);
-            name = itemView.findViewById(R.id.itemName);
+    @Override
+    public View getView(int position, View convertView, ViewGroup parent) {
+        ViewHolder holder;
+
+        if (convertView == null) {
+            convertView = LayoutInflater.from(context).inflate(R.layout.list_item_custom, parent, false);
+            holder = new ViewHolder();
+            holder.img = convertView.findViewById(R.id.itemImg);
+            holder.name = convertView.findViewById(R.id.itemName);
+            holder.price = convertView.findViewById(R.id.itemPrice);
+            holder.btnAdd = convertView.findViewById(R.id.btnAddCart);
+            convertView.setTag(holder);
+        } else {
+            holder = (ViewHolder) convertView.getTag();
         }
+
+        Product product = productList.get(position);
+        holder.img.setImageResource(product.getImageResId());
+        holder.name.setText(product.getName());
+        holder.price.setText(product.getPrice());
+
+        holder.btnAdd.setOnClickListener(v ->
+                Toast.makeText(context, product.getName() + " đã thêm vào giỏ", Toast.LENGTH_SHORT).show()
+        );
+
+        return convertView;
+    }
+
+    static class ViewHolder {
+        ImageView img;
+        TextView name, price;
+        Button btnAdd;
     }
 }
