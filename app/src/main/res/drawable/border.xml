@@ -1,0 +1,4 @@
+<shape xmlns:android="http://schemas.android.com/apk/res/android" android:shape="rectangle">
+    <solid android:color="@android:color/transparent" /> <!-- nền trong suốt -->
+    <stroke android:width="2dp" android:color="#FFFFFF"/> <!-- viền màu trắng, dày 2dp -->
+</shape>

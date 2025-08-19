@@ -16,7 +16,7 @@ import com.havudong.havudong.Model.Product;
 import com.havudong.havudong.Model.User;
 import com.havudong.havudong.User.ChangePassActivity;
 import com.havudong.havudong.User.UserInfoActivity;
-import com.havudong.havudong.Adapter.ProductAdapter;
+import com.havudong.havudong.ProductAdapter;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -36,6 +36,8 @@ public class MainActivity extends AppCompatActivity {
 
     ApiService apiService;
     String username;
+    ProductAdapter adapter;
+    List<Product> products = new ArrayList<>();
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -64,10 +66,13 @@ public class MainActivity extends AppCompatActivity {
             loadUserFromApi(username);
         }
 
-        // Sự kiện mở menu
+        // Adapter rỗng trước, cập nhật khi fetch API xong
+        adapter = new ProductAdapter(this, products);
+        gridView.setAdapter(adapter);
+
+        // Click menu
         btnMenu.setOnClickListener(v -> drawerLayout.openDrawer(GravityCompat.START));
 
-        // Click menu item
         navigationView.setNavigationItemSelectedListener(item -> {
             int id = item.getItemId();
             drawerLayout.closeDrawer(GravityCompat.START);
@@ -83,31 +88,63 @@ public class MainActivity extends AppCompatActivity {
             return true;
         });
 
-        // Sự kiện tìm kiếm (nếu muốn)
+        // Sự kiện tìm kiếm
         btnSearchIcon.setOnClickListener(v -> {
             String keyword = etSearch.getText().toString().trim();
             if (!keyword.isEmpty()) {
-                Toast.makeText(MainActivity.this, "Tìm kiếm: " + keyword, Toast.LENGTH_SHORT).show();
+                searchProducts(keyword);
             } else {
                 Toast.makeText(MainActivity.this, "Vui lòng nhập từ khóa", Toast.LENGTH_SHORT).show();
             }
         });
 
-        // Dữ liệu mẫu
-        List<Product> products = new ArrayList<>();
-        products.add(new Product("Gà thịt thả vườn", "250.000 ₫", R.drawable.img_4));
-        products.add(new Product("Gà thịt công nghiệp", "100.000 ₫", R.drawable.img_2));
-        products.add(new Product("Gà tre thái", "400.000 ₫", R.drawable.img_3));
-        products.add(new Product("Đông tảo loại 1", "350.000 ₫", R.drawable.img_1));
+        // Click item GridView
+        gridView.setOnItemClickListener((parent, view, position, id) -> {
+            Product product = products.get(position);
+            Intent intent = new Intent(MainActivity.this, ProductDetailActivity.class);
+            intent.putExtra("product", product);
+            startActivity(intent);
+        });
 
-        // Gắn adapter custom
-        ProductAdapter adapter = new ProductAdapter(this, products);
-        gridView.setAdapter(adapter);
+        // Load sản phẩm từ API
+        loadProductsFromApi();
+    }
 
-        // Click item ListView nếu muốn
-        gridView.setOnItemClickListener((parent, view, position, id) ->
-                Toast.makeText(MainActivity.this, "Bạn chọn: " + products.get(position).getName(), Toast.LENGTH_SHORT).show()
-        );
+    private void loadProductsFromApi() {
+        apiService.getProducts().enqueue(new Callback<List<Product>>() {
+            @Override
+            public void onResponse(Call<List<Product>> call, Response<List<Product>> response) {
+                if (response.isSuccessful() && response.body() != null) {
+                    products.clear();
+                    products.addAll(response.body());
+                    adapter.notifyDataSetChanged();
+                } else {
+                    Toast.makeText(MainActivity.this, "Không lấy được sản phẩm", Toast.LENGTH_SHORT).show();
+                }
+            }
+
+            @Override
+            public void onFailure(Call<List<Product>> call, Throwable t) {
+                Toast.makeText(MainActivity.this, "Lỗi kết nối: " + t.getMessage(), Toast.LENGTH_SHORT).show();
+            }
+        });
+    }
+
+    private void searchProducts(String keyword) {
+        // Nếu API có hỗ trợ filter theo tên, dùng apiService.getProductsByKeyword(keyword)
+        // Tạm thời filter cục bộ:
+        List<Product> filtered = new ArrayList<>();
+        for (Product p : products) {
+            if (p.getName().toLowerCase().contains(keyword.toLowerCase())) {
+                filtered.add(p);
+            }
+        }
+        if (!filtered.isEmpty()) {
+            adapter = new ProductAdapter(this, filtered);
+            gridView.setAdapter(adapter);
+        } else {
+            Toast.makeText(this, "Không tìm thấy sản phẩm", Toast.LENGTH_SHORT).show();
+        }
     }
 
     private void loadUserFromApi(String username) {

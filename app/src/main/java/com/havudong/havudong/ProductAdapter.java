@@ -1,11 +1,11 @@
-package com.havudong.havudong.Adapter;
+package com.havudong.havudong;
 
 import android.content.Context;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.*;
-import com.havudong.havudong.R;
+import com.bumptech.glide.Glide;
 import com.havudong.havudong.Model.Product;
 
 import java.util.List;
@@ -52,9 +52,16 @@ public class ProductAdapter extends BaseAdapter {
         }
 
         Product product = productList.get(position);
-        holder.img.setImageResource(product.getImageResId());
+
+        // Load ảnh từ URL
+        Glide.with(context)
+                .load(product.getImage())
+                .placeholder(R.drawable.ic_launcher_background)
+                .error(R.drawable.ic_launcher_background)
+                .into(holder.img);
+
         holder.name.setText(product.getName());
-        holder.price.setText(product.getPrice());
+        holder.price.setText(product.getPrice() + " ₫");
 
         holder.btnAdd.setOnClickListener(v ->
                 Toast.makeText(context, product.getName() + " đã thêm vào giỏ", Toast.LENGTH_SHORT).show()
