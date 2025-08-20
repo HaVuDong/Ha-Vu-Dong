@@ -16,7 +16,6 @@ import com.havudong.havudong.Model.Product;
 import com.havudong.havudong.Model.User;
 import com.havudong.havudong.User.ChangePassActivity;
 import com.havudong.havudong.User.UserInfoActivity;
-import com.havudong.havudong.ProductAdapter;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -29,7 +28,7 @@ public class MainActivity extends AppCompatActivity {
 
     DrawerLayout drawerLayout;
     NavigationView navigationView;
-    ImageButton btnMenu, btnSearchIcon;
+    ImageButton btnMenu, btnSearch, btnCart;
     EditText etSearch;
     TextView tvNavUsername;
     GridView gridView;
@@ -39,18 +38,36 @@ public class MainActivity extends AppCompatActivity {
     ProductAdapter adapter;
     List<Product> products = new ArrayList<>();
 
+    // Category
+    FrameLayout frameCategory1, frameCategory2, frameCategory3, frameCategory4;
+    TextView txtCategory1, txtCategory2, txtCategory3, txtCategory4;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
         // Ánh xạ view
-        drawerLayout = findViewById(R.id.drawerLayout);
+        drawerLayout   = findViewById(R.id.drawerLayout);
         navigationView = findViewById(R.id.navigationView);
-        btnMenu = findViewById(R.id.btnMenu);
-        btnSearchIcon = findViewById(R.id.btnSearchIcon);
-        etSearch = findViewById(R.id.etSearch);
-        gridView = findViewById(R.id.gridView);
+        btnMenu        = findViewById(R.id.btnMenu);
+        btnSearch      = findViewById(R.id.btnSearch);
+        etSearch       = findViewById(R.id.etSearch);
+        gridView       = findViewById(R.id.gridView);
+        btnCart        = findViewById(R.id.btnCart);
+
+        // Category mapping đúng ID
+        frameCategory1 = findViewById(R.id.frameCategory1);
+        txtCategory1   = findViewById(R.id.txtCategory1);
+
+        frameCategory2 = findViewById(R.id.frameCategory2);
+        txtCategory2   = findViewById(R.id.txtCategory2);
+
+        frameCategory3 = findViewById(R.id.frameCategory3);
+        txtCategory3   = findViewById(R.id.txtCategory3);
+
+        frameCategory4 = findViewById(R.id.frameCategory4);
+        txtCategory4   = findViewById(R.id.txtCategory4);
 
         // Header NavigationView
         View headerView = navigationView.getHeaderView(0);
@@ -66,7 +83,7 @@ public class MainActivity extends AppCompatActivity {
             loadUserFromApi(username);
         }
 
-        // Adapter rỗng trước, cập nhật khi fetch API xong
+        // Adapter ban đầu
         adapter = new ProductAdapter(this, products);
         gridView.setAdapter(adapter);
 
@@ -89,7 +106,7 @@ public class MainActivity extends AppCompatActivity {
         });
 
         // Sự kiện tìm kiếm
-        btnSearchIcon.setOnClickListener(v -> {
+        btnSearch.setOnClickListener(v -> {
             String keyword = etSearch.getText().toString().trim();
             if (!keyword.isEmpty()) {
                 searchProducts(keyword);
@@ -106,8 +123,27 @@ public class MainActivity extends AppCompatActivity {
             startActivity(intent);
         });
 
-        // Load sản phẩm từ API
+        // Click category
+        frameCategory1.setOnClickListener(v -> openCategory(txtCategory1.getText().toString()));
+        frameCategory2.setOnClickListener(v -> openCategory(txtCategory2.getText().toString()));
+        frameCategory3.setOnClickListener(v -> openCategory(txtCategory3.getText().toString()));
+        frameCategory4.setOnClickListener(v -> openCategory(txtCategory4.getText().toString()));
+
+
+        // Click giỏ hàng
+        btnCart.setOnClickListener(v -> {
+            Intent intent = new Intent(MainActivity.this, CartActivity.class);
+            startActivity(intent);
+        });
+
+        // Load sản phẩm
         loadProductsFromApi();
+    }
+
+    private void openCategory(String categoryName) {
+        Intent intent = new Intent(MainActivity.this, CategoryProductsActivity.class);
+        intent.putExtra("category", categoryName); // key phải trùng "category"
+        startActivity(intent);
     }
 
     private void loadProductsFromApi() {
@@ -131,8 +167,6 @@ public class MainActivity extends AppCompatActivity {
     }
 
     private void searchProducts(String keyword) {
-        // Nếu API có hỗ trợ filter theo tên, dùng apiService.getProductsByKeyword(keyword)
-        // Tạm thời filter cục bộ:
         List<Product> filtered = new ArrayList<>();
         for (Product p : products) {
             if (p.getName().toLowerCase().contains(keyword.toLowerCase())) {

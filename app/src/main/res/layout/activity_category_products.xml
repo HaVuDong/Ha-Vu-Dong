@@ -1,0 +1,186 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="#FFFFFF"
+    android:layout_marginTop="50dp">
+
+    <!-- Thanh trên cùng -->
+    <RelativeLayout
+        android:id="@+id/topBar"
+        android:layout_width="match_parent"
+        android:layout_height="64dp"
+        android:background="@drawable/topbar_gradient"
+        android:paddingStart="12dp"
+        android:paddingEnd="12dp"
+        android:gravity="center_vertical">
+
+        <!-- Nút back -->
+        <ImageButton
+            android:id="@+id/btnBack"
+            android:layout_width="48dp"
+            android:layout_height="48dp"
+            android:background="?attr/selectableItemBackgroundBorderless"
+            android:src="@drawable/baseline_navigate_before_24"
+            android:contentDescription="Back"
+            android:scaleType="centerInside" />
+
+        <!-- Tiêu đề -->
+        <TextView
+            android:id="@+id/txtCategoryTitle"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_centerInParent="true"
+            android:text="Danh mục"
+            android:textSize="20sp"
+            android:textStyle="bold"
+            android:textColor="#FFFFFF"/>
+    </RelativeLayout>
+
+    <!-- Banner -->
+    <ImageView
+        android:id="@+id/banner"
+        android:layout_width="match_parent"
+        android:layout_height="120dp"
+        android:layout_below="@id/topBar"
+        android:scaleType="fitXY"
+        android:src="@drawable/banner" />
+
+    <!-- Thanh chọn category -->
+    <HorizontalScrollView
+        android:id="@+id/horizontalScrollCategories"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/banner"
+        android:paddingStart="12dp"
+        android:paddingEnd="12dp"
+        android:scrollbars="none"
+        android:layout_marginTop="10dp">
+
+        <LinearLayout
+            android:id="@+id/layoutCategories"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            android:gravity="center_vertical">
+
+            <!-- Category 1 -->
+            <FrameLayout
+                android:id="@+id/frameCategory1"
+                android:layout_width="120dp"
+                android:layout_height="80dp"
+                android:layout_marginEnd="12dp"
+                android:background="@drawable/border"
+                android:clickable="true"
+                android:focusable="true">
+                <ImageView
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:scaleType="centerCrop"
+                    android:src="@drawable/cat1"
+                    android:background="@drawable/rounded_image"
+                    android:clipToOutline="true"/>
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="Dâu Đà Lạt"
+                    android:textColor="#FFFFFF"
+                    android:textStyle="bold"
+                    android:background="#80000000"
+                    android:padding="4dp"
+                    android:layout_gravity="center"/>
+            </FrameLayout>
+
+            <!-- Category 2 -->
+            <FrameLayout
+                android:id="@+id/frameCategory2"
+                android:layout_width="120dp"
+                android:layout_height="80dp"
+                android:layout_marginEnd="12dp"
+                android:background="@drawable/border"
+                android:clickable="true"
+                android:focusable="true">
+                <ImageView
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:scaleType="centerCrop"
+                    android:src="@drawable/cat2"
+                    android:background="@drawable/rounded_image"
+                    android:clipToOutline="true"/>
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="Rau củ Đà Lạt"
+                    android:textColor="#FFFFFF"
+                    android:textStyle="bold"
+                    android:background="#80000000"
+                    android:padding="4dp"
+                    android:layout_gravity="center"/>
+            </FrameLayout>
+
+            <!-- Category 3 -->
+            <FrameLayout
+                android:id="@+id/frameCategory3"
+                android:layout_width="120dp"
+                android:layout_height="80dp"
+                android:layout_marginEnd="12dp"
+                android:background="@drawable/border"
+                android:clickable="true"
+                android:focusable="true">
+                <ImageView
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:scaleType="centerCrop"
+                    android:src="@drawable/cat3"
+                    android:background="@drawable/rounded_image"
+                    android:clipToOutline="true"/>
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="Cúc Đà Lạt"
+                    android:textColor="#FFFFFF"
+                    android:textStyle="bold"
+                    android:background="#80000000"
+                    android:padding="4dp"
+                    android:layout_gravity="center"/>
+            </FrameLayout>
+
+            <!-- Category 4 -->
+            <FrameLayout
+                android:id="@+id/frameCategory4"
+                android:layout_width="120dp"
+                android:layout_height="80dp"
+                android:background="@drawable/border"
+                android:clickable="true"
+                android:focusable="true">
+                <ImageView
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:scaleType="centerCrop"
+                    android:src="@drawable/cat4"
+                    android:background="@drawable/rounded_image"
+                    android:clipToOutline="true"/>
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="Mứt các loại"
+                    android:textColor="#FFFFFF"
+                    android:textStyle="bold"
+                    android:background="#80000000"
+                    android:padding="4dp"
+                    android:layout_gravity="center"/>
+            </FrameLayout>
+        </LinearLayout>
+    </HorizontalScrollView>
+
+    <!-- GridView hiển thị sản phẩm -->
+    <GridView
+        android:id="@+id/gridViewProducts"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_below="@id/horizontalScrollCategories"
+        android:numColumns="2"
+        android:verticalSpacing="8dp"
+        android:horizontalSpacing="8dp"
+        android:padding="8dp"/>
+</RelativeLayout>

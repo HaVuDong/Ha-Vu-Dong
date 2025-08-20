@@ -5,15 +5,14 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class CartManager {
-
     private static CartManager instance;
-    private List<Product> cartItems;
+    private List<Product> cartList;
 
     private CartManager() {
-        cartItems = new ArrayList<>();
+        cartList = new ArrayList<>();
     }
 
-    public static synchronized CartManager getInstance() {
+    public static CartManager getInstance() {
         if (instance == null) {
             instance = new CartManager();
         }
@@ -21,19 +20,22 @@ public class CartManager {
     }
 
     public void addToCart(Product product) {
-        cartItems.add(product);
+        cartList.add(product);
+    }
+
+    public void removeFromCart(Product product) {
+        cartList.remove(product);
     }
 
     public int getCartCount() {
-        return cartItems.size();
+        return cartList.size();
     }
 
-    public List<Product> getCartItems() {
-        return new ArrayList<>(cartItems);
+    public List<Product> getCartList() {
+        return cartList;
     }
 
     public void clearCart() {
-        cartItems.clear();
+        cartList.clear();
     }
 }
-

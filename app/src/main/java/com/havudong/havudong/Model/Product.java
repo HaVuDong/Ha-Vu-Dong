@@ -10,6 +10,16 @@ public class Product implements Serializable {
     private String description;
     private String category;
 
+    // Constructor
+    public Product(String id, String name, int price, String image, String description, String category) {
+        this.id = id;
+        this.name = name;
+        this.price = price;
+        this.image = image;
+        this.description = description;
+        this.category = category;
+    }
+
     // Getter và Setter
     public String getId() { return id; }
     public void setId(String id) { this.id = id; }

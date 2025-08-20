@@ -13,6 +13,9 @@
         <activity android:name=".ForgotpassActivity" />
         <activity android:name=".User.UserInfoActivity" />
         <activity android:name=".User.ChangePassActivity" />
+        <activity android:name=".ProductDetailActivity"/>
+        <activity android:name=".CartActivity"/>
+        <activity android:name=".CategoryProductsActivity"/>
         <!-- 👇 Đây là activity chính, cần thêm android:exported -->
         <activity
             android:name=".LoginActivity"
