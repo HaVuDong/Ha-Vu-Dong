@@ -1,4 +1,3 @@
-<?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:orientation="vertical"
     android:layout_width="match_parent"
@@ -6,48 +5,59 @@
     android:padding="8dp"
     android:gravity="center"
     android:layout_margin="8dp"
-    android:elevation="4dp">
+    android:background="@drawable/product_card_bg"
+    android:elevation="6dp">
 
+    <!-- Ảnh sản phẩm -->
     <ImageView
         android:id="@+id/itemImg"
         android:layout_width="match_parent"
-        android:layout_height="150dp"
+        android:layout_height="160dp"
         android:scaleType="centerCrop"
         android:src="@mipmap/ic_launcher"
         android:layout_marginBottom="8dp"
-        android:clipToOutline="true" />
+        android:adjustViewBounds="true"
+        android:clipToOutline="true"
+        android:background="@drawable/rounded_image" />
 
+    <!-- Tên sản phẩm -->
     <TextView
         android:id="@+id/itemName"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:text="Tên sản phẩm"
-        android:textSize="16sp"
-        android:textColor="#333333"
+        android:textSize="15sp"
+        android:textStyle="bold"
+        android:textColor="#212121"
         android:gravity="center"
         android:ellipsize="end"
-        android:maxLines="2" />
+        android:maxLines="2"
+        android:layout_marginTop="2dp"/>
 
+    <!-- Giá sản phẩm -->
     <TextView
         android:id="@+id/itemPrice"
-        android:layout_width="match_parent"
+        android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="25 ₫"
         android:textSize="14sp"
-        android:textColor="#FF5722"
-        android:gravity="center"
-        android:layout_marginTop="4dp" />
+        android:textStyle="bold"
+        android:textColor="#E91E63"
+        android:layout_gravity="center"
+        android:layout_marginTop="4dp"/>
 
+    <!-- Nút thêm vào giỏ -->
     <Button
         android:id="@+id/btnAddCart"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
+        android:layout_width="match_parent"
+        android:layout_height="40dp"
+        android:layout_marginTop="10dp"
+        android:background="@drawable/btn_primary"
+        android:backgroundTint="#4CAF50"
+        android:fontFamily="sans-serif-medium"
+        android:stateListAnimator="@null"
         android:text="Thêm vào giỏ"
-        android:layout_marginTop="8dp"
-        android:backgroundTint="#673AB7"
-        android:textColor="#FFFFFF"
-        android:paddingHorizontal="16dp"
-        android:paddingVertical="6dp"
-        android:textSize="14sp"
-        android:stateListAnimator="@null"/>
+        android:textAllCaps="false"
+        android:textColor="#FFFFFF" />
+
 </LinearLayout>

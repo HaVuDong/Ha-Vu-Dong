@@ -12,8 +12,8 @@ import java.util.List;
 
 public class ProductAdapter extends BaseAdapter {
 
-    private Context context;
-    private List<Product> productList;
+    private final Context context;
+    private final List<Product> productList;
 
     public ProductAdapter(Context context, List<Product> productList) {
         this.context = context;
@@ -21,13 +21,19 @@ public class ProductAdapter extends BaseAdapter {
     }
 
     @Override
-    public int getCount() { return productList.size(); }
+    public int getCount() {
+        return productList != null ? productList.size() : 0;
+    }
 
     @Override
-    public Object getItem(int position) { return productList.get(position); }
+    public Object getItem(int position) {
+        return productList != null ? productList.get(position) : null;
+    }
 
     @Override
-    public long getItemId(int position) { return position; }
+    public long getItemId(int position) {
+        return position;
+    }
 
     @Override
     public View getView(int position, View convertView, ViewGroup parent) {
@@ -47,26 +53,30 @@ public class ProductAdapter extends BaseAdapter {
 
         Product product = productList.get(position);
 
+        // Load ảnh
         Glide.with(context)
                 .load(product.getImage())
                 .placeholder(R.drawable.ic_launcher_background)
                 .error(R.drawable.ic_launcher_background)
                 .into(holder.img);
 
+        // Gán dữ liệu
         holder.name.setText(product.getName());
-        holder.price.setText(String.format("%,d ₫", product.getPrice()));
+        holder.price.setText(String.format("%,d ₫", product.getPrice())); // format int thành tiền
 
-        // Click vào nút thêm vào giỏ
+        // Sự kiện thêm vào giỏ
         holder.btnAdd.setOnClickListener(v -> {
-            CartManager.getInstance().addToCart(product);
-            Toast.makeText(context, product.getName() + " đã thêm vào giỏ ("
-                    + CartManager.getInstance().getCartCount() + ")", Toast.LENGTH_SHORT).show();
+            CartManager.getInstance().addToCart(product, 1);
+            Toast.makeText(context,
+                    product.getName() + " đã thêm vào giỏ (" +
+                            CartManager.getInstance().getCartCount() + ")",
+                    Toast.LENGTH_SHORT).show();
         });
 
-        // Click vào toàn bộ item chuyển trang chi tiết
+        // Sự kiện click item -> sang trang chi tiết
         convertView.setOnClickListener(v -> {
             Intent intent = new Intent(context, ProductDetailActivity.class);
-            intent.putExtra("product", product);
+            intent.putExtra("product", product); // Product cần implements Serializable hoặc Parcelable
             context.startActivity(intent);
         });
 

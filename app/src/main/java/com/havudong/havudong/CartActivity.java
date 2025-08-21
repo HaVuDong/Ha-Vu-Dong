@@ -1,14 +1,15 @@
 package com.havudong.havudong;
 
+import android.content.Intent;
 import android.os.Bundle;
-import android.widget.Button;
-import android.widget.ListView;
-import android.widget.TextView;
+import android.widget.*;
 import androidx.appcompat.app.AppCompatActivity;
-import com.havudong.havudong.Model.Product;
+import com.havudong.havudong.Model.CartItem;
+
 import java.util.List;
 
 public class CartActivity extends AppCompatActivity {
+
     private ListView listViewCart;
     private TextView tvTotalPrice;
     private Button btnCheckout;
@@ -23,26 +24,34 @@ public class CartActivity extends AppCompatActivity {
         tvTotalPrice = findViewById(R.id.tvTotalPrice);
         btnCheckout = findViewById(R.id.btnCheckout);
 
-        // Lấy danh sách giỏ hàng
-        List<Product> cartList = CartManager.getInstance().getCartList();
-
-        cartAdapter = new CartAdapter(this, cartList, () -> updateTotalPrice());
+        List<CartItem> cartItems = CartManager.getInstance().getCartItems();
+        cartAdapter = new CartAdapter(this, cartItems);
         listViewCart.setAdapter(cartAdapter);
 
         updateTotalPrice();
 
         btnCheckout.setOnClickListener(v -> {
-            CartManager.getInstance().clearCart();
-            cartAdapter.notifyDataSetChanged();
-            updateTotalPrice();
+            int total = CartManager.getInstance().getTotalPrice();
+            if (total == 0) {
+                Toast.makeText(this, "Giỏ hàng trống!", Toast.LENGTH_SHORT).show();
+                return;
+            }
+
+            // Chuyển sang màn hình thanh toán
+            Intent intent = new Intent(CartActivity.this, PaymentActivity.class);
+            startActivity(intent);
         });
     }
 
     private void updateTotalPrice() {
-        double total = 0;
-        for (Product p : CartManager.getInstance().getCartList()) {
-            total += p.getPrice();
-        }
-        tvTotalPrice.setText("Tổng: " + total + " đ");
+        int total = CartManager.getInstance().getTotalPrice();
+        tvTotalPrice.setText("Tổng: " + String.format("%,d ₫", total));
+    }
+
+    @Override
+    protected void onResume() {
+        super.onResume();
+        cartAdapter.notifyDataSetChanged();
+        updateTotalPrice();
     }
 }
