@@ -1,12 +1,14 @@
-package com.havudong.havudong;
+package com.havudong.havudong.Activity;
 
 import android.os.Bundle;
 import android.widget.*;
 import androidx.appcompat.app.AppCompatActivity;
 import android.content.Intent;
+
 import com.havudong.havudong.Api.ApiClient;
 import com.havudong.havudong.Api.ApiService;
 import com.havudong.havudong.Model.User;
+import com.havudong.havudong.R;
 
 import retrofit2.Call;
 import retrofit2.Callback;

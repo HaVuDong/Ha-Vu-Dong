@@ -1,4 +1,4 @@
-package com.havudong.havudong;
+package com.havudong.havudong.Adapter;
 
 import android.content.Context;
 import android.view.LayoutInflater;
@@ -6,7 +6,10 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.*;
 import com.bumptech.glide.Glide;
+import com.havudong.havudong.CartManager;
 import com.havudong.havudong.Model.CartItem;
+import com.havudong.havudong.R;
+
 import java.util.List;
 
 public class CartAdapter extends BaseAdapter {

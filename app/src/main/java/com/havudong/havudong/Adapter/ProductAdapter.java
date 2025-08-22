@@ -1,4 +1,4 @@
-package com.havudong.havudong;
+package com.havudong.havudong.Adapter;
 
 import android.content.Context;
 import android.content.Intent;
@@ -7,7 +7,11 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.*;
 import com.bumptech.glide.Glide;
+import com.havudong.havudong.Activity.ProductDetailActivity;
+import com.havudong.havudong.CartManager;
 import com.havudong.havudong.Model.Product;
+import com.havudong.havudong.R;
+
 import java.util.List;
 
 public class ProductAdapter extends BaseAdapter {

@@ -9,17 +9,17 @@
         android:theme="@style/Theme.AppCompat.Light.DarkActionBar">
 
         <activity android:name=".MainActivity" />
-        <activity android:name=".RegisterActivity" />
-        <activity android:name=".ForgotpassActivity" />
+        <activity android:name=".Activity.RegisterActivity" />
+        <activity android:name=".Activity.ForgotpassActivity" />
         <activity android:name=".User.UserInfoActivity" />
         <activity android:name=".User.ChangePassActivity" />
-        <activity android:name=".ProductDetailActivity"/>
-        <activity android:name=".CartActivity"/>
-        <activity android:name=".CategoryProductsActivity"/>
-        <activity android:name=".PaymentActivity"/>
+        <activity android:name=".Activity.ProductDetailActivity"/>
+        <activity android:name=".Activity.CartActivity"/>
+        <activity android:name=".Activity.CategoryProductsActivity"/>
+        <activity android:name=".Activity.PaymentActivity"/>
         <!-- 👇 Đây là activity chính, cần thêm android:exported -->
         <activity
-            android:name=".LoginActivity"
+            android:name=".Activity.LoginActivity"
             android:exported="true">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />

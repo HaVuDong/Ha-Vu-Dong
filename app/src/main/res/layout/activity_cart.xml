@@ -3,7 +3,8 @@
     android:padding="16dp"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:layout_marginTop="50dp">
+    android:layout_marginTop="50dp"
+    android:paddingBottom="24dp">   <!-- thêm padding dưới -->
 
     <ListView
         android:id="@+id/listViewCart"
@@ -24,5 +25,6 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:text="Thanh toán"
-        android:layout_marginTop="12dp"/>
+        android:layout_marginTop="12dp"
+        android:layout_marginBottom="20dp"/> <!-- đẩy nút lên -->
 </LinearLayout>

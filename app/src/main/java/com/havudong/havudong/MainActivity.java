@@ -10,6 +10,11 @@ import androidx.core.view.GravityCompat;
 import androidx.drawerlayout.widget.DrawerLayout;
 
 import com.google.android.material.navigation.NavigationView;
+import com.havudong.havudong.Activity.CartActivity;
+import com.havudong.havudong.Activity.CategoryProductsActivity;
+import com.havudong.havudong.Activity.LoginActivity;
+import com.havudong.havudong.Activity.ProductDetailActivity;
+import com.havudong.havudong.Adapter.ProductAdapter;
 import com.havudong.havudong.Api.ApiClient;
 import com.havudong.havudong.Api.ApiService;
 import com.havudong.havudong.Model.Product;
@@ -115,6 +120,24 @@ public class MainActivity extends AppCompatActivity {
             }
         });
 
+        // Reset sản phẩm khi xoá từ khóa
+        etSearch.addTextChangedListener(new android.text.TextWatcher() {
+            @Override
+            public void beforeTextChanged(CharSequence s, int start, int count, int after) { }
+
+            @Override
+            public void onTextChanged(CharSequence s, int start, int before, int count) { }
+
+            @Override
+            public void afterTextChanged(android.text.Editable s) {
+                if (s.toString().trim().isEmpty()) {
+                    // Hiển thị lại toàn bộ danh sách sản phẩm ban đầu
+                    adapter = new ProductAdapter(MainActivity.this, products);
+                    gridView.setAdapter(adapter);
+                }
+            }
+        });
+
         // Click item GridView
         gridView.setOnItemClickListener((parent, view, position, id) -> {
             Product product = products.get(position);
@@ -128,7 +151,6 @@ public class MainActivity extends AppCompatActivity {
         frameCategory2.setOnClickListener(v -> openCategory(txtCategory2.getText().toString()));
         frameCategory3.setOnClickListener(v -> openCategory(txtCategory3.getText().toString()));
         frameCategory4.setOnClickListener(v -> openCategory(txtCategory4.getText().toString()));
-
 
         // Click giỏ hàng
         btnCart.setOnClickListener(v -> {
@@ -173,6 +195,7 @@ public class MainActivity extends AppCompatActivity {
                 filtered.add(p);
             }
         }
+
         if (!filtered.isEmpty()) {
             adapter = new ProductAdapter(this, filtered);
             gridView.setAdapter(adapter);

@@ -1,9 +1,8 @@
-package com.havudong.havudong;
+package com.havudong.havudong.Activity;
 
 import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
-import android.view.View;
 import android.widget.FrameLayout;
 import android.widget.GridView;
 import android.widget.ImageButton;
@@ -15,6 +14,8 @@ import androidx.appcompat.app.AppCompatActivity;
 import com.havudong.havudong.Api.ApiClient;
 import com.havudong.havudong.Api.ApiService;
 import com.havudong.havudong.Model.Product;
+import com.havudong.havudong.Adapter.ProductAdapter;
+import com.havudong.havudong.R;
 
 import java.util.ArrayList;
 import java.util.List;

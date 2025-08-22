@@ -1,17 +1,16 @@
-package com.havudong.havudong;
+package com.havudong.havudong.Activity;
 
 import android.annotation.SuppressLint;
 import android.app.AlertDialog;
-import android.content.DialogInterface;
 import android.os.Bundle;
 import android.text.InputType;
-import android.view.View;
 import android.widget.*;
 import androidx.appcompat.app.AppCompatActivity;
 
 import com.havudong.havudong.Api.ApiClient;
 import com.havudong.havudong.Api.ApiService;
 import com.havudong.havudong.Model.User;
+import com.havudong.havudong.R;
 
 import java.util.List;
 

@@ -1,16 +1,19 @@
-package com.havudong.havudong;
+package com.havudong.havudong.Activity;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.widget.*;
 import androidx.appcompat.app.AppCompatActivity;
 import com.bumptech.glide.Glide;
+import com.havudong.havudong.CartManager;
 import com.havudong.havudong.Model.Product;
+import com.havudong.havudong.R;
 
 public class ProductDetailActivity extends AppCompatActivity {
 
     private TextView tvName, tvPrice, tvDescription, tvQuantity;
     private ImageView ivImage;
-    private Button btnAddToCart, btnIncrease, btnDecrease;
+    private Button btnAddToCart, btnIncrease, btnDecrease, btnBuyNow; // thêm btnBuyNow
     private Product product;
     private int quantity = 1; // số lượng mặc định
 
@@ -29,6 +32,9 @@ public class ProductDetailActivity extends AppCompatActivity {
         tvQuantity = findViewById(R.id.tvQuantity);
         btnIncrease = findViewById(R.id.btnIncrease);
         btnDecrease = findViewById(R.id.btnDecrease);
+
+        // ánh xạ btnBuyNow
+        btnBuyNow = findViewById(R.id.btnBuyNow);
 
         if (getIntent() != null && getIntent().hasExtra("product")) {
             product = (Product) getIntent().getSerializableExtra("product");
@@ -61,10 +67,21 @@ public class ProductDetailActivity extends AppCompatActivity {
             }
         });
 
+        // thêm vào giỏ
         btnAddToCart.setOnClickListener(v -> {
             if (product != null) {
                 CartManager.getInstance().addToCart(product, quantity);
                 btnAddToCart.setText("Đã thêm vào giỏ (" + CartManager.getInstance().getCartCount() + ")");
+            }
+        });
+
+        // mua ngay → thêm vào giỏ + chuyển sang CartActivity
+        btnBuyNow.setOnClickListener(v -> {
+            if (product != null) {
+                CartManager.getInstance().addToCart(product, quantity);
+                Intent intent = new Intent(ProductDetailActivity.this, CartActivity.class);
+                startActivity(intent);
+                finish(); // đóng ProductDetail để user ở lại màn giỏ hàng
             }
         });
     }

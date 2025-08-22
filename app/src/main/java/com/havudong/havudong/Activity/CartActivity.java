@@ -1,10 +1,14 @@
-package com.havudong.havudong;
+package com.havudong.havudong.Activity;
 
 import android.content.Intent;
 import android.os.Bundle;
 import android.widget.*;
 import androidx.appcompat.app.AppCompatActivity;
+
+import com.havudong.havudong.Adapter.CartAdapter;
+import com.havudong.havudong.CartManager;
 import com.havudong.havudong.Model.CartItem;
+import com.havudong.havudong.R;
 
 import java.util.List;
 

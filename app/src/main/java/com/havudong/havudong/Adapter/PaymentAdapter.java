@@ -1,4 +1,4 @@
-package com.havudong.havudong;
+package com.havudong.havudong.Adapter;
 
 import android.view.LayoutInflater;
 import android.view.View;
@@ -9,6 +9,8 @@ import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 import com.bumptech.glide.Glide;
 import com.havudong.havudong.Model.CartItem;
+import com.havudong.havudong.R;
+
 import java.util.List;
 
 public class PaymentAdapter extends RecyclerView.Adapter<PaymentAdapter.ViewHolder> {

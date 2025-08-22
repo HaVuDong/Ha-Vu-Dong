@@ -1,4 +1,4 @@
-package com.havudong.havudong;
+package com.havudong.havudong.Activity;
 
 import android.content.Intent;
 import android.content.SharedPreferences;
@@ -8,7 +8,9 @@ import androidx.appcompat.app.AppCompatActivity;
 
 import com.havudong.havudong.Api.ApiClient;
 import com.havudong.havudong.Api.ApiService;
+import com.havudong.havudong.MainActivity;
 import com.havudong.havudong.Model.User;
+import com.havudong.havudong.R;
 
 import java.util.List;
 

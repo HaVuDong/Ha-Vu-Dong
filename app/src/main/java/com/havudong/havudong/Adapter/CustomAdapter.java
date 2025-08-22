@@ -1,4 +1,4 @@
-package com.havudong.havudong;
+package com.havudong.havudong.Adapter;
 
 import android.content.Context;
 import android.view.LayoutInflater;
@@ -7,6 +7,8 @@ import android.view.ViewGroup;
 import android.widget.BaseAdapter;
 import android.widget.ImageView;
 import android.widget.TextView;
+
+import com.havudong.havudong.R;
 
 public class CustomAdapter extends BaseAdapter {
 
